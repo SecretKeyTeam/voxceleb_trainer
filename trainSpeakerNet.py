@@ -11,6 +11,8 @@ from tuneThreshold import tuneThresholdfromScore
 from SpeakerNet import SpeakerNet
 from DatasetLoader import get_data_loader
 
+
+
 parser = argparse.ArgumentParser(description = "SpeakerNet");
 
 parser.add_argument('--config',         type=str,   default=None,   help='Config YAML file');
@@ -65,7 +67,11 @@ parser.add_argument('--nOut',           type=int,   default=512,    help='Embedd
 ## For test only
 parser.add_argument('--eval', dest='eval', action='store_true', help='Eval only')
 
+## Othrt
+parser.add_argument('--gpu',            type=str,   default="0",    help='GPU Number');
+
 args = parser.parse_args();
+
 
 ## Parse YAML
 def find_option_type(key, parser):
@@ -93,6 +99,8 @@ if not(os.path.exists(model_save_path)):
         
 if not(os.path.exists(result_save_path)):
     os.makedirs(result_save_path)
+
+os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 
 ## Load models
 s = SpeakerNet(**vars(args));
